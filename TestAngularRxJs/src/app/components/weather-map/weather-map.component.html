@@ -1,6 +1,13 @@
-<form>
-  <input type="text" name="inputWeather">
-  {{cityName}}
-  {{date}}
+<form [formGroup]="weatherForm" (ngSubmit)="searchCityInfo()">
+  <input type="text" name="inputWeather" formControlName="city">
   <button type="submit">Submit</button>
 </form>
+
+<div *ngIf="cityInfo">
+  <p>{{cityInfo.name}}</p>
+  <p>{{cityInfo.date | date}}</p>
+  <p>{{cityInfo.temp}}</p>
+  <p>{{cityInfo.description}}</p>
+  <p><img [src]="cityInfo.icon"></p>
+</div>
+

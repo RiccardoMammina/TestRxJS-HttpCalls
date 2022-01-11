@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import { FormBuilder } from '@angular/forms';
+import { ICityInfo } from 'src/app/interfaces/city';
 import { WeatherService } from 'src/app/services/weather.service';
 
 
@@ -8,21 +10,22 @@ import { WeatherService } from 'src/app/services/weather.service';
   styleUrls: ['./weather-map.component.scss']
 })
 export class WeatherMapComponent implements OnInit {
-  cityName: any;
-  temp: any;
-  description: any;
+  public weatherForm = this.fb.group({
+    city: ["Palermo"]
+  })
 
-  constructor(private readonly weatherService: WeatherService) { }
+  public cityInfo!:ICityInfo;
 
-  date: Date = new Date();
+  constructor(private fb:FormBuilder, private service:WeatherService) { }
+
   ngOnInit(): void {
-    this.weatherService.getWeather('London').subscribe((city) => {
-      this.cityName = city.name;
-      this.temp = city.main.temp;
-      this.description = city.weather[0].description;
-      console.log(this.description);
 
-      // this.propNames = (Object.keys(item));
-      // this.weather = city.weather[0];
-    }
-    )}}
+  }
+
+  searchCityInfo(): void {
+    this.service.getCityInfo(this.weatherForm.value.city).subscribe(response => {
+      this.cityInfo = response;
+    })
+
+  }
+}
